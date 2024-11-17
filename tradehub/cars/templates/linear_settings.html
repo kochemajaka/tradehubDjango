@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}  <link rel="stylesheet" href="{% static 'css/settings.css' %}"> {% endblock %}
+
+{% block content %}
+ <div class="tab">
+	<input id="tab-btn-1" name="tab-btn" type="radio" value="">
+	<label for="tab-btn-1">Редактировать профиль</label>
+	<input id="tab-btn-2" name="tab-btn" type="radio" value="">
+	<label for="tab-btn-2">Изменить пароль</label>
+
+    <div class="tab-content" id="content-1">
+        <h2>Редактировать данные</h2>
+	    {{message}}
+	    <div class="form">
+            <form action="{% url 'update_user_info' %}" method="POST" name="update_info_form">
+                {% csrf_token %}
+                <div class="input_field">
+                    <label for="firstname">Имя</label>
+                    <input type="text" name="firstname" id="firstname" placeholder="Иван" maxlength="20" value="{{ name }}" required>
+                </div>
+
+                <div class="input_field">
+                    <label for="lastname">Фамилия</label>
+                    <input type="text" name="lastname" placeholder="Иванов" maxlength="20" value="{{ lastName }}" required>
+                </div>
+
+                <div class="input_field">
+                    <label for="fatherName">Отчество</label>
+                    <input type="text" name="fatherName" placeholder="Иванович" value="{{ fatherName }}" maxlength="20" >
+                </div>
+
+                <div class="input_field">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" name="phone" placeholder="+7-(921)-123-12-12" value="{{ phone }}" maxlength="20">
+                </div>
+
+                <div class="input_field">
+                    <label for="mail">Эл. почта</label>
+                    <input type="email" name="mail" placeholder="ivanov_ivan@mail.ru" value="{{ email }}" required>
+                </div>
+
+                <div class="input_field">
+                    <label for="datebirdth">Дата рождения</label>
+                    <input type="date" name="dateBirdth" placeholder="" value="{{ dateBirdth }}" >
+                </div>
+
+                <button type="submit" class="button">Сохранить данные</button>
+            </form>
+        </div>
+    </div>
+
+     <div class="tab-content" id="content-2">
+        <h2>Изменить пароль</h2>
+	    {{password_message}}
+	    <div class="form">
+            <form action="{% url 'update_password' %}" method="POST" name="update_password">
+                {% csrf_token %}
+                <div class="input_field">
+                    <label for="lastPassword">Старый пароль</label>
+                    <input type="password" name="lastPassword" id="lastPassword" placeholder="" maxlength="32" required>
+                </div>
+
+                <div class="input_field">
+                    <label for="newPassword1">Новый пароль</label>
+                    <input type="password" name="newPassword1" id="newPassword1" placeholder="" maxlength="32" required>
+                </div>
+
+                <div class="input_field">
+                    <label for="newPassword2">Повторите новый пароль</label>
+                    <input type="newPassword2" name="newPassword2" id="newPassword2" placeholder="" maxlength="32" required>
+                </div>
+
+                <button type="submit" class="button">Сохранить</button>
+            </form>
+        </div>
+    </div>
+ </div>
+{% endblock %}

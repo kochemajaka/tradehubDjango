@@ -1,0 +1,59 @@
+{% load static %}
+
+<!DOCTYPE html> <!--декларация типа документа. Так браузер узнает, на каком языке и с какими технологиями он был создан-->
+<html lang="ru"> <!--текстовое содержимое элемента html будет соответствовать английскому языку-->
+<head>
+  <meta charset="UTF-8"> <!--Указывает кодировку документа-->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+	{% block style %}{% endblock %}
+  <title>Tradehub</title>
+</head>
+	<body>
+		<div id="wrapper"> <!--блочным элементом и предназначен для выделения фрагмента документа с целью изменения вида содержимого-->
+			<header>
+				<div class="header__section headerlogo">Tradehub</div>
+				<div class="header__section">
+					<div class="header__item"><h5>АИ Авто</h5></div>
+					<div class="header__item"><h5>{{user.username}}</h5></div>
+					<div class="headerButton" onclick="location.href={% url 'logout' %}"><img src="{% static 'icons/logout_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg' %}" class="icon" ></div>
+					</div>
+			</header>
+		</div>
+			<main>
+				<div class="sideBar">
+					<div class="sideBar__section">
+						<a href="{% url 'home' %}">
+							<div class="sidebar__item"><img src="{% static 'icons/garage_home_FILL0_wght400_GRAD0_opsz24.svg' %}" class="icon" ><p>Главная</p></div>
+						</a>
+						<a href="{% url 'kanban' %}">
+							<div class="sidebar__item"><img src="{% static 'icons/view_column_2_FILL0_wght100_GRAD0_opsz24.svg' %}" class="icon" ><p>Канбан</p></div>
+						</a>
+						<a href="{% url 'form_page' %}">
+							<div class="sidebar__item"><img src="{% static 'icons/forms_add_on_FILL0_wght400_GRAD0_opsz24.svg' %}" class="icon"><p>Формы</p></div>
+						</a>
+						   {% if request.user.employees.first.position != 'linear' %}
+        						<a href="{% url 'analytics' %}">
+            						<div class="sidebar__item"><img src="{% static 'icons/monitoring_FILL0_wght400_GRAD0_opsz24.svg' %}" class="icon"><p>Аналитика</p></div>
+        						</a>
+        					{% endif %}
+						<a href="{% url 'sclad_page' %}">
+							<div class="sidebar__item"><img src="{% static 'icons/car_tag_FILL0_wght400_GRAD0_opsz24.svg' %}" class="icon" ><p>Склад</p></div>
+						</a>
+						<a href="{% url 'home' %}">
+							<div class="sidebar__item"><img src="{% static 'icons/home_storage_FILL0_wght400_GRAD0_opsz24.svg' %}" class="icon" ><p>Архив</p></div>
+						</a>
+					</div>
+					<div class="sideBar__section">
+						<a href="{% url 'settings' %}">
+							<div class="sidebar__item"><img src="{% static 'icons/settings_FILL0_wght400_GRAD0_opsz24.svg' %}" class="icon" ><p>Настройки</p></div>
+						</a>
+					</div>
+				</div>
+				<div class="container">
+                    {% block content %}{% endblock %}
+				</div>
+			</main>
+		</div>
+		<footer></footer>
+	</body>
+</html>

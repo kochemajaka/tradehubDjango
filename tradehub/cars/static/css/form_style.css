@@ -1,0 +1,333 @@
+
+.container{
+    width: 85%;
+    padding: 20px;
+}
+
+.hr_tab{
+  position: relative;
+  top: 7px;
+  left: 1px;
+  height: 0;
+	border: none;
+  border: 2 px solid #000000;
+}
+.tab {
+  gap: 1rem;
+}
+
+.tab > input[type="radio"] {
+  display: none;
+}
+
+.tab-content {
+  display: none;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+#tab-btn-1:checked~#content-1,
+#tab-btn-2:checked~#content-2,
+#tab-btn-3:checked~#content-3,
+#tab-btn-4:checked~#content-4,
+#tab-btn-5:checked~#content-5,
+#tab-btn-6:checked~#content-6,
+#tab-btn-7:checked~#content-7{
+  display: block;
+}
+
+.tab > label {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  cursor: pointer;
+  transition: color .15s ease-in-out, border-color .15s ease-in-out;
+  color: #0000009f;
+  background: 0 0;
+  border-bottom: 0.125rem solid transparent;
+}
+
+.tab > label:hover {
+  border-bottom-color: #0000009f;
+}
+
+.tab > input[type="radio"]:checked + label {
+  cursor: default;
+  font-weight: bold;
+  color: #212529;
+  border-bottom-color: #212529;
+}
+
+.tab-content {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.tab-content .button{
+  width: 200px;
+  height: 35px;
+  background-color: #F7F6F5;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  float: right;
+  margin-right: 175px;
+}
+
+.tab-content .button:hover{
+  background-color: #EBEAE7;
+}
+
+
+.input_field{
+  width: 100%;
+  height: 35px;
+  margin: 15px 0;
+}
+.form{
+ width: 70%;
+}
+.input_field select{
+  width: 73%;
+  height: 35px;
+  background: transparent;
+  border: none;
+  outline: none;
+  background-color: #F7F6F5;
+  border: 1px solid rgb(163, 163, 163);
+  border-radius: 7px;
+  font-size: 10px;
+  color: black;
+  padding: 10px;
+  margin-left: 50px;
+  margin-top: 0px;
+}
+
+.input_field input{
+  width: 70%;
+  height: 15px;
+  background: transparent;
+  border: none;
+  outline: none;
+  background-color: #F7F6F5;
+  border: 1px solid rgb(163, 163, 163);
+  border-radius: 7px;
+  font-size: 10px;
+  color: black;
+  padding: 10px;
+  margin-left: 50px;
+}
+
+.input_field label{
+  font-size: 14px;
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+  margin-bottom: 8px;
+  
+}
+
+.big_input_field {
+  height: 150px;
+}
+
+.button{
+    width: 150px;
+    height: 30px;
+    background-color: #F7F6F5;
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    box-shadow: 0 0 2px rgb(0,0,1);
+    cursor: pointer;
+    font-size: 12px;
+    float: right;
+}
+
+.button:hover{
+    background-color: #EBEAE7;
+}
+
+
+
+
+.container{
+    width: 85%;
+    padding: 20px;
+}
+
+.hr_tab{
+  position: relative;
+  top: 7px;
+  left: 1px;
+  height: 0;
+	border: none;
+  border: 2 px solid #000000;
+}
+.tab {
+  gap: 1rem;
+}
+
+.tab > input[type="radio"] {
+  display: none;
+}
+
+.tab-content {
+  display: none;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+#tab-btn-1:checked~#content-1,
+#tab-btn-2:checked~#content-2,
+#tab-btn-3:checked~#content-3 {
+  display: block;
+}
+
+.tab > label {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  cursor: pointer;
+  transition: color .15s ease-in-out, border-color .15s ease-in-out;
+  color: #0000009f;
+  background: 0 0;
+  border-bottom: 0.125rem solid transparent;
+}
+
+.tab > label:hover {
+  border-bottom-color: #0000009f;
+}
+
+.tab > input[type="radio"]:checked + label {
+  cursor: default;
+  font-weight: bold;
+  color: #212529;
+  border-bottom-color: #212529;
+}
+
+.tab-content {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.tab-content .button{
+  width: 200px;
+  height: 35px;
+  background-color: #F7F6F5;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  float: right;
+  margin-right: 175px;
+}
+
+.tab-content .button:hover{
+  background-color: #EBEAE7;
+}
+
+
+.input_field{
+  width: 100%;
+  height: 35px;
+  margin: 15px 0;
+}
+.form{
+ width: 70%;
+}
+.input_field select{
+  width: 72%;
+  height: 35px;
+  background: transparent;
+  border: none;
+  outline: none;
+  background-color: #F7F6F5;
+  border: 1px solid rgb(163, 163, 163);
+  border-radius: 7px;
+  font-size: 10px;
+  color: black;
+  padding: 10px;
+  margin-left: 50px;
+  margin-top: 0px;
+}
+
+.input_field input{
+  width: 70%;
+  height: 15px;
+  background: transparent;
+  border: none;
+  outline: none;
+  background-color: #F7F6F5;
+  border: 1px solid rgb(163, 163, 163);
+  border-radius: 7px;
+  font-size: 10px;
+  color: black;
+  padding: 10px;
+  margin-left: 50px;
+}
+
+.input_field label{
+  font-size: 14px;
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+  margin-bottom: 8px;
+
+}
+
+.big_input_field{
+  width: 100%;
+  height: 305px;
+  margin: 15px 0;
+  transition: 400ms;
+}
+
+.big_input_field input {
+  width: 70%;
+  height: 15px;
+  background: transparent;
+  border: none;
+  outline: none;
+  background-color: #F7F6F5;
+  border: 1px solid rgb(163, 163, 163);
+  border-radius: 7px;
+  font-size: 10px;
+  color: black;
+  padding: 10px;
+  margin-left: 50px;
+  transition: 400ms;
+}
+
+.big_input_field label{
+  font-size: 14px;
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+  margin-bottom: 8px;
+
+}
+
+.big_input_field input:focus{
+  height: 300px;
+}
+
+.button{
+    width: 150px;
+    height: 30px;
+    background-color: #F7F6F5;
+    border: none;
+    outline: none;
+    border-radius: 15px;
+    box-shadow: 0 0 2px rgb(0,0,1);
+    cursor: pointer;
+    font-size: 12px;
+    float: right;
+}
+
+.button:hover{
+    background-color: #EBEAE7;
+}
+
+

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Gallery</title>
+  <style>
+
+        .gallery {
+    position: relative; /* Относительное позиционирование для контейнера */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+    }
+
+    .image {
+    position: relative; /* Относительное позиционирование для изображений */
+    width: 800px;
+    height: auto;
+    margin: 10px;
+    border-radius: 10px;
+    }
+
+        .prev-button,
+    .next-button {
+    position: absolute; /* Абсолютное позиционирование для кнопок */
+    top: 50%;
+    /* трансформации элемента по вертикальной оси 
+    (ось Y) путем перемещения его на указанное расстояние относительно его собственной высоты. */
+    transform: translateY(-50%);
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #020000;
+    }
+
+        .prev-button {
+    left: 10px;
+    }
+
+    .next-button {
+    right: 10px;
+    }
+
+  </style>
+</head>
+<body>
+        <div class="gallery" id="gallery">
+        <button class="prev-button" onclick="changeImage(-1)">&#10094;</button>
+        <button class="next-button" onclick="changeImage(1)">&#10095;</button>
+  <script>
+			const images = ["images/skoda_1 (1).jpg","images/skoda_1 (2).jpg","images/skoda_1 (3).jpg","images/skoda_1 (4).jpg","images/skoda_1 (5).jpg","images/skoda_1 (6).jpg","images/skoda_1 (7).jpg","images/skoda_1 (8).jpg","images/skoda_1 (9).jpg","images/skoda_1 (10).jpg",];
+			let currentIndex = 0;
+
+			// Шаг 2: Создание контейнера для размещения рисунков на странице
+			const galleryContainer = document.getElementById("gallery");
+
+			// Шаг 3: Загрузка рисунков в контейнер с использованием оператора цикла
+			images.forEach((image, index) => {
+				const imgElement = document.createElement("img");
+				imgElement.src = image;
+				imgElement.setAttribute("class","image");
+				imgElement.style.display = index === 0 ? "block" : "none"; // Первая фотография видима, остальные скрыты
+				galleryContainer.appendChild(imgElement);
+			});
+
+			// Функция для замены изображения
+			function changeImage(step) {
+				currentIndex = (currentIndex + step + images.length) % images.length;
+				const imagesElements = document.querySelectorAll(".gallery img");
+				imagesElements.forEach((img, index) => {
+					img.style.display = index === currentIndex ? "block" : "none";
+				});
+			}
+
+            const imag = document.getElementById("gallery")
+            const imagesElements = document.querySelectorAll(".gallery img");
+            imag.addEventListener('mouseenter', () => {
+				imagesElements.forEach((img, index) => {
+					img.style.display = index === (currentIndex+1) ? "block" : "none";
+                });
+            });
+
+            // Добавляем обработчик события для возвращения исходного изображения при уходе курсора
+            imag.addEventListener('mouseleave', () => {
+                imagesElements.forEach((img, index) => {
+				img.style.display = index === (currentIndex) ? "block" : "none";
+                });
+            });
+  </script>
+</body>
+</html>

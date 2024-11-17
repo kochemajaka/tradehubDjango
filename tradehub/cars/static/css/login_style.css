@@ -1,0 +1,86 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* браузер вычисляет размер элемента, включая внутреннее содержимое, 
+    отступы и границы в пределах указанной ширины и высоты. 
+    Таким образом, если вы установите ширину элемента 100 пикселей и добавите к нему 
+    отступы и границы, размер элемента все равно будет равен 100 пикселям, 
+    а содержимое будет ужиматься, чтобы вместиться в эту область.*/
+}
+
+body{
+    display: flex;/*способ отображения элементов в блоке (flexbox-сетки)*/
+    /*выравнивание по главной оси (вертикальной) Flex-контейнера. Значение space-between равномерно 
+    распределяет пространство между элементами, делая их расположение таким образом, 
+    чтобы промежутки между элементами были одинаковыми, а первый и последний элементы 
+    прижимались к краям контейнера.*/
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #EBEAE7;
+}
+
+.wrapper{
+    width: 420px;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    padding: 30px;
+}
+
+.wrapper h1{
+    font-size: 36px;
+    text-align: center;
+}
+
+.input_field{
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+
+.input_field input{
+    width: 100%;
+    height: 100%;
+    background: transparent; /*Устанавливает прозрачный фон элемента*/
+    border: none;
+    outline: none;
+    background-color: #F7F6F5;
+    border: 1px solid rgb(163, 163, 163);
+    border-radius: 35px;
+    font-size: 14px;
+    color: black;
+    padding: 20px;
+}
+
+
+.input_field input.invalid {
+    border: 1px solid red;
+}
+
+.error {
+    margin: 5px;
+    padding-left: 10px;
+    color: red;
+    font-size: 12px;
+}
+
+
+.input_field input::placeholder{
+    color:black;
+}
+
+.wrapper .button{
+    width: 100%;
+    height: 45px;
+    background-color: #F7F6F5;
+    border: none;
+    outline: none;
+    border-radius: 35px;
+    box-shadow: 0 0 5px rgb(0,0,1);
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.wrapper .button:hover{
+    background-color: #EBEAE7;
+}

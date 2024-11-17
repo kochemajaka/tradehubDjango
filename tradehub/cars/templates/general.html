@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/general.css' %}">
+{% endblock %}
+{% load custom_filters %}
+{% block content %}
+   <div class="time">
+       <div class="days_left">
+           Дней до конца месяца:
+       </div>
+       <div class="date"></div>
+   </div>
+					<div class="widgets-select">
+					<button id="dropdownButton">
+						<img src="{% static 'icons/more_horiz_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg' %}" class="icon" >
+					</button>
+
+					 <div class="dropdown-checklist" id="dropdownChecklist">
+                      <form method="POST" action="{% url 'save_widgets' %}"> <!-- URL для сохранения -->
+                {% csrf_token %}
+                {% for widget in available_widgets %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox"
+                           name="widgets"
+                           value="{{ widget.id }}"
+                           id="widget{{ widget.id }}"
+                           {% if widget.id in selected_widget_ids %} checked {% endif %}>
+                    <label class="form-check-label" for="widget{{ widget.id }}">
+                        {{ widget.widgetName }}
+                    </label>
+                </div>
+                {% endfor %}
+						<button id="saveButton">Сохранить</button>
+					</div>
+				</div>
+<div class="widget">
+    <h2>Выбранные виджеты:</h2>
+    {% for widget in selected_widget %}
+        <h3>{{ widget.widgetName }}</h3>
+        <div>
+            <table>
+                {% with widget_data=table_data|get_item:widget.id %}
+                    {% if widget_data != 'К сожалению, значение не найдено!' %}
+                        <thead>
+                            <tr>
+                                {% for column in widget_data.columns %}
+                                    <th>{{ column }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in widget_data.data %}
+                                <tr>
+                                    {% for column in widget_data.columns %}
+                                        <td>{{ row|get_item:column }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    {% else %}
+                        <tr>
+                            <td colspan="100%">Нет данных для отображения</td>
+                        </tr>
+                    {% endif %}
+                {% endwith %}
+            </table>
+        </div>
+    {% endfor %}
+</div>
+
+				</div>
+			</main>
+		</div>
+		<script>
+			const now = new Date();
+			const d = now.getDate();
+			const m = now.getMonth() + 1; // Месяцы в JavaScript индексируются с 0
+			const y = now.getFullYear();
+			const days_left = new Date(y, m, 0).getDate() - now.getDate();
+			document.querySelector(".days_left").textContent += ` ${days_left}`;
+			document.querySelector(".date").textContent = `${d}.${m}.${y}`;
+		</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Показываем или скрываем список при нажатии на кнопку
+        $('#dropdownButton').on('click', function() {
+            $('#dropdownChecklist').toggleClass('active');
+        });
+
+        // Обрабатываем нажатие на кнопку "Сохранить"
+        $('#saveButton').on('click', function() {
+            $('#dropdownChecklist').removeClass('active'); // Закрываем список после сохранения
+        });
+    });
+</script>
+
+{% endblock %}

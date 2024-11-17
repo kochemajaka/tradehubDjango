@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/sclad.css' %}">
+{% endblock %}
+
+{% block content %}
+					<div class="search">
+						<input type="text" id="car-search" name="name" placeholder="Поиск" required> <button type="submit" class="button">Фильтры</button>
+					</div>
+					<div class="tab">
+					  <input checked id="tab-btn-1" name="tab-btn" type="radio" value="">
+					  <label for="tab-btn-1">На складе</label>
+					  <input id="tab-btn-2" name="tab-btn" type="radio" value="">
+					  <label for="tab-btn-2">Архив</label>
+					  <div class="tab-content" id="content-1">
+						  	   {% for item in car_data %}
+                            <a class="car-card" href="{% url 'car_card' item.car.id %}">
+                                <div class="car-photo">
+                                    {% if item.car.photo %}
+                                        <img class="photo" src="{{ item.car.photo.url }}" alt="{{ item.car.name }}">
+                                    {% else %}
+                                        <img class="photo" src="path_to_default_image" alt="No image available">
+                                    {% endif %}
+                                </div>
+                                <div class="car-name">
+                                    <h1>{{ item.car.brand }} {{ item.car.model }}, {{ item.car.year }}</h1>
+                                </div>
+                                <div class="car-status">
+                                    {{ item.car.stageId.name }}
+                                </div>
+                                <div class="car-VIN">
+                                    <div class="placeholder">VIN</div>
+                                    {{ item.car.VIN }}
+                                </div>
+                                <div class="car-stats">
+                                    <div class="stats-item">
+                                        <div class="placeholder">Цена продажи</div>
+                                        {{ item.prebuy.predictCost|floatformat:0 }} ₽
+                                    </div>
+                                    <div class="stats-item">
+                                        <div class="placeholder">Цена закупа</div>
+                                        {{ item.prebuy.carCost|floatformat:0 }} ₽
+                                    </div>
+                                    <div class="stats-item">
+                                        <div class="placeholder">Затраты</div>
+                                        {{ item.expenses|floatformat:0 }} ₽
+                                    </div>
+                                    <div class="stats-item">
+                                        <div class="placeholder">Себестоимость</div>
+                                        {{ item.cost_price|floatformat:0 }} ₽
+                                    </div>
+                                </div>
+                            </a>
+                            {% endfor %}
+
+					  <div class="tab-content" id="content-2">
+						</div>
+					  <div class="tab-content" id="content-3">
+						Содержимое 3... Lorem ipsum dolor sit, amet consectetur adipisicing elit. Similique eaque iure debitis nostrum, vero ad totam ratione sequi! Suscipit, labore repellat cum soluta ullam dignissimos perspiciatis sequi rerum sapiente ex.
+					  </div>
+					 </div>
+                    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('car-search');
+    const carCards = document.querySelectorAll('.car-card');
+
+    // Функция для фильтрации автомобилей
+    searchInput.addEventListener('input', function () {
+        const filterValue = searchInput.value.toLowerCase();
+
+        carCards.forEach(function (card) {
+            // Получаем текст из карточки автомобиля (марка, модель, год, VIN)
+            const carName = card.querySelector('.car-name h1').textContent.toLowerCase();
+            const carVIN = card.querySelector('.car-VIN').textContent.toLowerCase();
+
+            // Фильтруем автомобили по названию или VIN
+            if (carName.includes(filterValue) || carVIN.includes(filterValue)) {
+                card.style.display = 'block'; // Показываем подходящие автомобили
+            } else {
+                card.style.display = 'none'; // Скрываем те, которые не соответствуют фильтру
+            }
+        });
+    });
+});
+
+</script>
+{% endblock %}
+

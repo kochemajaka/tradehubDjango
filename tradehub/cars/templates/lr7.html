@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Image Slideshow</title>
+<style>
+    .slideshow {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.controls {
+    text-align: center;
+    margin-top: 20px;
+}
+
+</style> 
+</head>
+<body>
+    <div id="currentDateTime"></div>
+<div id="slideshow" class="slideshow">
+    <img id="image" src="images/1.jpg">
+</div>
+
+<div class="controls">
+    <label>Интервал (в секундах):</label>
+    <input type="number" id="intervalInput" min="1" value="5">
+    <button onclick="startSlideshow()">Start Slideshow</button>
+    <button onclick="stopSlideshow()">Stop Slideshow</button>
+</div>
+
+<script>
+    const images = ["images/1.jpg", "images/2.jpg"]; // Массив с именами файлов изображений
+    let intervalId; // Идентификатор интервального таймера
+    let currentIndex = 0; // Текущий индекс изображения в массиве
+
+    // Функция для запуска слайдшоу
+    function startSlideshow() {
+        stopSlideshow(); // Остановить слайдшоу перед запуском, чтобы избежать дублирования интервалов
+
+        const intervalSeconds = parseInt(document.getElementById("intervalInput").value) * 1000; // Преобразование интервала из секунд в миллисекунды
+        intervalId = setInterval(changeImage, intervalSeconds); // выполнение кода или вызова функции через определенные промежутки времен
+    }
+
+    // Функция для остановки слайдшоу
+    function stopSlideshow() {
+        clearInterval(intervalId);
+    }
+
+    // Функция для смены изображения
+    function changeImage() {
+        const imageElement = document.getElementById("image");
+        currentIndex = (currentIndex + 1) % images.length; // Переход к следующему изображению в массиве
+        imageElement.src = images[currentIndex];
+    }
+
+        // Получаем ссылку на элемент, куда будем выводить текущую дату и время
+    const currentDateTimeElement = document.getElementById('currentDateTime');
+
+    // Функция для получения текущей даты и времени в указанном формате
+    function getCurrentDateTime() {
+        // Создаем объект для работы с текущей датой и временем
+        const currentDate = new Date();
+
+        // Получаем день, месяц и год
+        const day = currentDate.getDate();
+        const month = currentDate.toLocaleString('default', { month: 'long' }); // Полное название месяца
+        const year = currentDate.getFullYear();
+
+        // Получаем час, минуту и секунду
+        let hour = currentDate.getHours();
+        let minute = currentDate.getMinutes();
+        let second = currentDate.getSeconds();
+
+        // Добавляем нуль перед однозначным числом (например, 7:05:09 вместо 7:5:9)
+        hour = hour < 10 ? '0' + hour : hour;
+        minute = minute < 10 ? '0' + minute : minute;
+        second = second < 10 ? '0' + second : second;
+
+        // Формируем строку с текущей датой и временем
+        const currentDateTimeString = `Сегодня: ${day} ${month} ${year} года<br>Сейчас: ${hour}:${minute}:${second}`;
+
+        // Выводим строку на страницу
+        currentDateTimeElement.innerHTML = currentDateTimeString;
+    }
+
+    // Вызываем функцию для вывода текущей даты и времени при загрузке страницы
+    getCurrentDateTime();
+
+    // Обновляем текущее время каждую секунду
+    setInterval(getCurrentDateTime, 1000);
+
+</script>
+
+</script>
+</body>
+</html>

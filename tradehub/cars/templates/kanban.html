@@ -1,0 +1,268 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/kanban.css' %}">
+{% endblock %}
+{% load custom_filters %}
+{% block content %}
+<div class="board">
+	{% for column in columns %}
+        <div class="column" id="{{ column.id }}" ondrop="drop(event, '{{ column.id }}')" ondragover="allowDrop(event)">
+		<div class="column-head">
+			<div class="name">
+				<p>{{ column.name }}</p>
+			</div>
+			<div class="cnt-card">
+				<p>{{ column_car_counts|get_item:column.id }}</p>
+			</div>
+		</div>
+
+		<div class="task-container">
+			{% for car in column.cars %}
+				<div class="car-card" id="{{ car.id }}" draggable="true" ondragstart="drag(event)" onclick="openModal('{{ car.id }}')">
+					<div class="car-name">{{ car.name }}</div>
+					<div class="car-info">
+						<div class="date-entrance">10.10.2023</div>
+						<div class="days-entrace">12 дней на складе</div>
+					</div>
+					<div class="task-info">
+						<div class="cnt-tasks">12</div>
+						<div class="days-on-stage">10</div>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+<div id="carModal" class="modal" style="display: none;">
+    <div class="modal-content">
+		<div class="modal-head">
+			<div class="modal-car-name" id="modalCarName"><p><strong></strong></div>
+        	<button class="close-btn" onclick="closeModal()">&times;</button>
+			<div class="buttons">
+<!--				<button class="btn" onclick=""><p><strong>Добавить</strong></button>-->
+<!--				<button class="btn" onclick=""><p><strong>Удалить</strong></button>-->
+				<button class="btn" id="completeButton"><p><strong>Выполнить</strong></p></button>
+				<button class="btn btn-transition" id="transitionButton">
+    				<p><strong>Перейти в карточку</strong></p>
+				</button>
+			</div>
+		</div>
+        <div class="modal-details">
+             <table>
+                        <thead>
+                            <tr>
+								<th><input type="checkbox" class="row-checkbox" id="selectAll"></th>
+								<th>Название</th>
+								<th>Этап</th>
+								<th>Ответственный</th>
+								<th>Срок</th>
+								<th>Описание</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    function allowDrop(event) {
+        event.preventDefault(); // Позволяет перетаскиваемым элементам попадать в контейнер
+    }
+
+    function drag(event) {
+        event.dataTransfer.setData("text/plain", event.target.id); // Сохраняет id перетаскиваемого элемента
+    }
+
+function drop(event, newColumnId) {
+    event.preventDefault();
+
+    const carId = event.dataTransfer.getData('text/plain');
+    const carCard = document.getElementById(carId); // Получаем карточку по ID
+
+    if (carCard) {
+        const newColumn = document.getElementById(newColumnId);
+        const taskContainer = newColumn.querySelector('.task-container');
+
+        // Удаляем карточку из старого столбца
+        const oldColumn = carCard.parentNode; // Узнаем родительский столбец
+        oldColumn.removeChild(carCard); // Удаляем карточку из старого столбца
+
+        // Добавляем карточку в новый столбец
+        taskContainer.appendChild(carCard);
+
+        // Обновляем stageId в базе данных
+        updateStageId(carId, newColumnId); // Обновляем stageId
+
+    }
+}
+
+function updateStageId(carId, columnId) {
+    fetch('/update-stage/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+        },
+        body: JSON.stringify({ car_id: carId, stage_id: columnId })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Success:', data);
+        // Обновляем количество автомобилей в столбцах
+        updateCarCount();
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
+function updateCarCount() {
+    // Получаем все столбцы
+    const columns = document.querySelectorAll('.column');
+
+    columns.forEach(column => {
+        // Находим контейнер задач для каждого столбца
+        const taskContainer = column.querySelector('.task-container');
+
+        if (taskContainer) {
+            // Считаем количество элементов с классом car-card
+            const carCards = taskContainer.querySelectorAll('.car-card');
+            const count = carCards.length; // Обновляем количество
+            const countElement = column.querySelector('.cnt-card p');
+            if (countElement) {
+                countElement.innerText = count; // Обновляем текст с количеством
+            }
+        }
+    });
+
+    const boardWrapper = document.querySelector('.board');
+
+boardWrapper.addEventListener('dragover', function (event) {
+    const SCROLL_THRESHOLD = 300;  // Расстояние от края для скролла
+    const SCROLL_SPEED = 5;       // Скорость скролла
+
+    const { clientX} = event;
+
+    // Координаты для проверки, если мы около края
+    const { left, right, top, bottom } = boardWrapper.getBoundingClientRect();
+
+    // Горизонтальный скролл: скроллим влево
+    if (clientX < left + SCROLL_THRESHOLD) {
+        boardWrapper.scrollLeft -= SCROLL_SPEED;
+    }
+    // Горизонтальный скролл: скроллим вправо
+    else if (clientX > right - SCROLL_THRESHOLD) {
+        boardWrapper.scrollLeft += SCROLL_SPEED;
+    }
+});
+}
+
+	// Функция для открытия модального окна
+function openModal(carId) {
+    // Открываем модальное окно
+    document.getElementById("carModal").style.display = "block";
+
+    // Устанавливаем URL для кнопки "Перейти в карточку"
+    const transitionButton = document.getElementById('transitionButton');
+    transitionButton.onclick = function() {
+        const redirectUrl = `/car_card/${carId}/`;
+        window.location.href = redirectUrl;
+    };
+
+    // Устанавливаем carId в кнопку "Выполнить"
+    const completeButton = document.getElementById('completeButton');
+    completeButton.setAttribute('data-car-id', carId);
+
+    // Загружаем задачи для carId
+    loadTasks(carId);
+}
+
+// Функция для закрытия модального окна
+function closeModal() {
+    document.getElementById("carModal").style.display = "none"; // Скрывает модальное окно
+}
+
+// Закрытие модального окна при клике вне его
+window.onclick = function(event) {
+    if (event.target == document.getElementById("carModal")) {
+        closeModal();
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const selectAllCheckbox = document.getElementById('selectAll');
+
+    selectAllCheckbox.addEventListener('change', function() {
+        const rowCheckboxes = document.querySelectorAll('.modal-details tbody .row-checkbox');
+        rowCheckboxes.forEach(checkbox => {
+            checkbox.checked = this.checked; // Устанавливаем состояние
+        });
+    });
+});
+
+document.getElementById('completeButton').addEventListener('click', function() {
+    const carId = this.getAttribute('data-car-id');
+    const selectedTasks = Array.from(document.querySelectorAll('.row-checkbox:checked'))
+        .map(checkbox => checkbox.getAttribute('data-id')); // Получаем ID выбранных задач
+
+    // Отправляем AJAX-запрос для обновления статуса задач
+    fetch(`/kanban/tasks/complete/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({ carId: carId, taskIds: selectedTasks })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Обновляем список задач после выполнения
+            loadTasks(carId);
+        } else {
+            console.error('Ошибка выполнения задач:', data.message);
+        }
+    })
+    .catch(error => console.error('Ошибка:', error));
+});
+
+function loadTasks(carId) {
+    // Выполняем AJAX-запрос для получения задач
+    fetch(`/kanban/tasks/${carId}/`)
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector('#carModal .modal-details tbody');
+            tbody.innerHTML = ''; // Очищаем предыдущие данные в таблице
+
+			// Устанавливаем имя автомобиля
+			const modalCarName = document.getElementById('modalCarName');
+			modalCarName.innerHTML = `<strong>${data.car_name}</strong>`; // Название автомобиля
+
+            // Заполняем таблицу новыми задачами
+            data.tasks.forEach(task => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><input type="checkbox" class="row-checkbox" data-id="${task.id}"></td>
+                    <td>${task.name}</td>
+                    <td>${task.stageId}</td>
+                    <td>${task.employeeId}</td>
+                    <td>${task.deadline ? new Date(task.deadline).toLocaleDateString() : 'Нет'}</td>
+                    <td>${task.description}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Ошибка при загрузке задач:', error));
+}
+</script>
+
+{% endblock %}

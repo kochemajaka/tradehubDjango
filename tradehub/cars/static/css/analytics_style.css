@@ -1,0 +1,140 @@
+
+.tab {
+  gap: 1rem;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+
+.tab > input[type="radio"] {
+  display: none;
+}
+
+.tab-content {
+  display: none;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+#tab-btn-1:checked~#content-1,
+#tab-btn-2:checked~#content-2,
+#tab-btn-3:checked~#content-3 {
+  display: block;
+}
+
+.tab > label {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  cursor: pointer;
+  transition: color .15s ease-in-out, border-color .15s ease-in-out;
+  color: #0000009f;
+  background: 0 0;
+  border-bottom: 0.125rem solid transparent;
+}
+
+.tab > label:hover {
+  border-bottom-color: #0000009f;
+}
+
+.tab > input[type="radio"]:checked + label {
+  cursor: default;
+  font-weight: bold;
+  color: #212529;
+  border-bottom-color: #212529;
+}
+
+.tab-content {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.tab-content .button{
+  width: 200px;
+  height: 35px;
+  background-color: #F7F6F5;
+  border: none;
+  outline: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  float: right;
+  margin-right: 175px;
+}
+
+
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Добавляет горизонтальный скроллбар */
+}
+
+.table-scroll {
+    max-width: 100%; /* Ограничение по ширине */
+    overflow-x: scroll; /* Скролл для содержимого */
+}
+
+
+
+.sticky-col {
+    position: -webkit-sticky; /* Для поддержки в Safari */
+    position: sticky;
+    left: 0; /* Фиксация первой колонки */
+    background-color: #fff; /* Фон, чтобы было видно */
+    z-index: 1; /* Поверх остальных элементов */
+}
+
+thead .sticky-col {
+    z-index: 2; /* Повышенный z-index для заголовка таблицы */
+    background-color: #f2f2f2; /* Светлый фон для заголовков */
+}
+
+.tab-content .button:hover{
+  background-color: #EBEAE7;
+}
+
+.table-radius{
+       border-radius: 30px;
+}
+table {
+   width: 100%;
+   border-collapse: collapse; /* Убираем границы между ячейками */
+}
+
+th, td {
+     padding: 10px;
+     text-align: left;
+}
+
+th {
+     background-color: #f2f2f2; /* Светлый фон для заголовков */
+}
+
+.date-select {
+    width: 530px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.date-select input{
+    padding-left: 10px;
+    height: 30px;
+    border: 2px solid #EBEAE7;
+    border-radius: 7px;
+    padding-right: 30px;
+}
+.date-select label {
+    position: absolute;
+    margin-left: -30px; /* Отступ от левого края */
+    margin-top: 5px;
+    pointer-events: none; /* Исключаем событие клика на label */
+}
+
+.date-select .button {
+    width: 120px;
+    background-color: #F1F6F5;
+    border: none;
+    border-radius: 10px;
+    justify-content: center;
+}
+
+.date-select button:hover{
+    background-color: #EBEAE7;
+}

@@ -1,0 +1,77 @@
+.container{
+  width: 85%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.time{
+  display: flex;
+  justify-content: space-between;
+}
+.days_left{
+
+}
+.date{
+
+}
+
+.widgets-select{
+    width: 300 px;
+    margin-left: auto;
+    position: relative;
+}
+
+.widgets-select button{
+    background-color: #F1F6F5;
+    border: none;
+    border-radius: 10px;
+    width: 35px;
+    justify-content: center;
+}
+
+.widgets-select button:hover{
+    background-color: #EBEAE7;
+}
+
+.dropdown-checklist {
+  position: absolute;
+  width: 200px;
+    left: -170px;
+    padding: 5px;
+    background-color: #F1F6F5;
+    display: none;
+    border-radius: 10px;
+}
+
+
+.dropdown-checklist.active {
+    display: block;
+}
+
+.dropdown-checklist button {
+    width: 80px;
+    margin-top: 10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    border: 1px solid #000000;
+
+}
+
+.widget{
+    width: 90%;
+}
+
+ table {
+   width: 100%;
+   border-collapse: collapse; /* Убираем границы между ячейками */
+}
+
+th, td {
+     padding: 10px;
+     text-align: left;
+}
+
+th {
+     background-color: #f2f2f2; /* Светлый фон для заголовков */
+}

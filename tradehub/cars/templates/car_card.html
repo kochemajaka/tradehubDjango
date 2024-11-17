@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/card_style.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
+
+{% block content %}
+				<div class="container">
+					<div class="shapka">
+						<div class="first_line">
+							<div class="back_button"><img src="{% static 'icons/arrow_warm_up_FILL0_wght400_GRAD0_opsz24.svg' %}" class="icon" style="transform: rotate(-90deg);" ><a href="{% url 'sclad_page' %}">К списку</a></div>
+							<div class="on_sclad">
+								<div class="label">На балансе</div>
+								<div class="value">26 дней</div>
+							</div>
+						</div>
+						<div class="second_line">
+							<div class="car_name">{{ car.name }}</div>
+							<div class="status">{{ car.stageId.name }}</div>
+						</div>
+						<div class="third_line">
+							<div class="column">
+								<img class="photo" src="images/Skoda.jpg">
+							</div>
+							<div class="column">
+								<div class="row_col">
+									<div class="label">VIN</div>
+									<div class="value">{{ car.VIN }}</div>
+								</div>
+								<div class="row_col">
+									<div class="label">ПТС</div>
+									<div class="value">{{ buyCar.typePTS }}</div>
+								</div>
+								<div class="row_col">
+									<div class="label">Владельцев</div>
+									<div class="value">{{ buyCar.owners }}</div>
+								</div>
+								<div class="row_col">
+									<div class="label">Пробег</div>
+									<div class="value">{{ car.odometer }}</div>
+								</div>
+							</div>
+							<div class="column">
+								<div class="row_col">
+									<div class="label">Двигатель</div>
+									<div class="value">{{ car.engine }}</div>
+								</div>
+								<div class="row_col">
+									<div class="label">КПП</div>
+									<div class="value">{{ car.transmission }}</div>
+								</div>
+								<div class="row_col">
+									<div class="label">Привод</div>
+									<div class="value">Передний</div>
+								</div>
+							</div>
+							<div class="column">
+								<div class="row_col">
+									<div class="label">Целевая цена</div>
+									<div class="value">{{ preBuyCar.predictCost }}</div>
+								</div>
+								<div class="row_col">
+									<div class="label">Цена закупа</div>
+									<div class="value">{{ preBuyCar.carCost }}</div>
+								</div>
+								<div class="row_col">
+									<div class="label">Затраты</div>
+									<div class="value">50000</div>
+								</div>
+								<div class="row_col">
+									<div class="label">Себестоимость</div>
+									<div class="value">1600000</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="car_content">
+						<div class="tab">
+						<input checked id="tab-btn-1" name="tab-btn" type="radio" value="">
+						<label for="tab-btn-1">Описание </label>
+						<input id="tab-btn-2" name="tab-btn" type="radio" value="">
+						<label for="tab-btn-2">Фото </label>
+						<input id="tab-btn-3" name="tab-btn" type="radio" value="">
+						<label for="tab-btn-3">ДДС </label>
+						<div class="tab-content" id="content-1">
+						</div>
+						<div class="tab-content" id="content-2">
+							<div class="gallery" id="gallery">
+								<button class="prev-button" onclick="changeImage(-1)">&#10094;</button>
+    							<button class="next-button" onclick="changeImage(1)">&#10095;</button>
+							</div>
+						</div>
+						<div class="tab-content" id="content-3">
+							Содержимое 3... Lorem ipsum dolor sit, amet consectetur adipisicing elit. Similique eaque iure debitis nostrum, vero ad totam ratione sequi! Suscipit, labore repellat cum soluta ullam dignissimos perspiciatis sequi rerum sapiente ex.
+						</div>
+						</div>
+					</div>
+				</div>
+
+{% endblock %}

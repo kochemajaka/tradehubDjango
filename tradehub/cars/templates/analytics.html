@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/analytics_style.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/jquery-date-range-picker/dist/daterangepicker.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery-date-range-picker/dist/jquery.daterangepicker.min.js" defer></script>
+{% endblock %}
+
+{% block content %}
+
+<div class="tab">
+    <input id="tab-btn-1" name="tab-btn" type="radio" value="">
+    <label for="tab-btn-1">P&L</label>
+    <input id="tab-btn-2" name="tab-btn" type="radio" value="">
+    <label for="tab-btn-2">Бизнес модель</label>
+
+    <div class="tab-content" id="content-1">
+        <div class="date-select">
+            <form action="{% url 'generate_pnl' %}" method="POST" name="date_form">
+                {% csrf_token %}
+                <input type="text" id="date-range" name="date-range" />
+                <label for="date-range" ><img src="{% static 'icons/calendar_month_24dp_EBEAE7_FILL0_wght400_GRAD0_opsz24.svg' %}"></img></label>
+                <button type="submit" class="button">Сгенерировать</button>
+            </form>
+        </div>
+
+      <div class="table-radius">
+        {% if monthly_metrics %}
+          <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="sticky-col">Параметры</th>
+                            {% for month_data in monthly_metrics %}
+                             <th>{{ month_data.month }}</th>
+                            {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="sticky-col">Выручка</td>
+                        {% for month_data in monthly_metrics %}
+                            <td>{{ month_data.revenue }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="sticky-col">Валовая прибыль</td>
+                        {% for month_data in monthly_metrics %}
+                            <td>{{ month_data.gross_profit }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="sticky-col">Расходы</td>
+                        {% for month_data in monthly_metrics %}
+                            <td>{{ month_data.expenses }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="sticky-col">Операционная прибыль</td>
+                        {% for month_data in monthly_metrics %}
+                            <td>{{ month_data.operating_profit }}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="sticky-col">Операционная рентабельность (%)</td>
+                        {% for month_data in monthly_metrics %}
+                            <td>{{ month_data.operating_margin }}%</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <td class="sticky-col">Рентабельность товара (%)</td>
+                        {% for month_data in monthly_metrics %}
+                            <td>{{ month_data.product_margin }}%</td>
+                        {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+{% else %}
+    <p>Выберите диапазон дат для отображения аналитики.</p>
+{% endif %}
+      </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#date-range').dateRangePicker({
+            format: 'YYYY-MM-DD',       // Формат даты
+            autoClose: true,            // Автозакрытие при выборе
+        });
+    });
+</script>
+
+{% endblock %}

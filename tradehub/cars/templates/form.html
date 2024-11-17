@@ -1,0 +1,533 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/form_style.css' %}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="tab">
+	<input id="tab-btn-1" name="tab-btn" type="radio" value="" {% if active_tab == '1' %}checked{% endif %} >
+	<label for="tab-btn-1">Закуп автомобиля</label>
+	<input id="tab-btn-2" name="tab-btn" type="radio" value="" {% if active_tab == '2' %}checked{% endif %}>
+	<label for="tab-btn-2">Покупка автомобиля</label>
+	<input id="tab-btn-3" name="tab-btn" type="radio" value="" {% if active_tab == '3' %}checked{% endif %}>
+	<label for="tab-btn-3">Продажа автомобиля</label>
+	<input id="tab-btn-4" name="tab-btn" type="radio" value="" {% if active_tab == '4' %}checked{% endif %}>
+	<label for="tab-btn-4">ДДС</label>
+	<input id="tab-btn-5" name="tab-btn" type="radio" value="" {% if active_tab == '5' %}checked{% endif %}>
+	<label for="tab-btn-5">Перемещение денежных средств</label>
+	<input id="tab-btn-6" name="tab-btn" type="radio" value="" {% if active_tab == '6' %}checked{% endif %}>
+	<label for="tab-btn-6">Отчет о состоянии автомобиля</label>
+	<input id="tab-btn-7" name="tab-btn" type="radio" value="" {% if active_tab == '7' %}checked{% endif %}>
+	<label for="tab-btn-7">Добавление задач</label>
+
+	<!-- Закуп автомобиля -->
+	<div class="tab-content" id="content-1">
+		{{message}}
+		<form action="{% url 'prebuy_form' %}" method="POST" name="car_form">
+			{% csrf_token %}
+			 <div class="input_field">
+				<label for="mark">Марка</label>
+				<select name="mark" id="mark" required>
+					{% for brand in brands %}
+						<option value="{{ brand.name }}">{{ brand.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="input_field">
+				<label for="model">Модель</label>
+				<select name="model" id="model" required>
+					{% for model in models %}
+						<option value="{{ model.name }}">{{ model.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="input_field">
+				<label for="vin">VIN</label>
+				<input type="text" name="vin" placeholder="VIN">
+			</div>
+
+			<div class="input_field">
+				<label for="year">Год</label>
+				<input type="number" name="year" placeholder="Год" required>
+			</div>
+
+			<div class="input_field">
+				<label for="engine">Мотор</label>
+				<input type="text" name="engine" placeholder="Мотор" required>
+			</div>
+
+			<div class="input_field">
+				<label for="transmission">Коробка</label>
+				<input type="text" name="transmission" placeholder="Коробка" required>
+			</div>
+
+			<div class="input_field">
+				<label for="mileage">Пробег</label>
+				<input type="number" name="mileage" placeholder="Пробег" required>
+			</div>
+
+			<div class="input_field">
+				<label for="source">Источник автомобиля</label>
+				<select name="source" id="source" >
+					{% for client in clientSources %}
+						<option value="{{ model.id }}">{{ client.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="big_input_field input_field">
+				<label for="description">Описание</label>
+				<input type="text" name="description" placeholder="Преимущества/недостатки"></textarea>
+			</div>
+
+			<div class="input_field">
+				<label for="cost">Стоимость</label>
+				<input type="number" name="cost" placeholder="Стоимость" required>
+			</div>
+
+			<div class="input_field">
+				<label for="margin">Прогноз маржинальности</label>
+				<input type="number" name="margin" placeholder="Прогноз маржинальности" required>
+			</div>
+
+			<div class="input_field">
+				<label for="sale_forecast">Прогноз продажи</label>
+				<input type="number" name="sale_forecast" placeholder="Прогноз продажи" required>
+			</div>
+
+			<div class="input_field">
+				<label for="sold_last_3_months">Продано за 3 мес</label>
+				<input type="number" name="sold_last_3_months" placeholder="Продано за 3 мес">
+			</div>
+
+			<div class="input_field">
+				<label for="current_listings">Сейчас опубликовано на классифайдах</label>
+				<input type="number" name="current_listings" placeholder="Опубликовано на классифайдах">
+			</div>
+
+			<div class="input_field">
+				<label for="haraba">Оценка автомобиля по Харабе</label>
+				<input type="number" name="haraba" placeholder="One in 1 to 5">
+			</div>
+
+			<button type="submit" class="button">Добавить запись</button>
+		 </form>
+	</div>
+
+	<!-- Покупка автомобиля -->
+	<div class="tab-content" id="content-2">
+		 {{buy_message}}
+		 <form action="{% url 'buy_form' %}" method="POST" name="buy_form">
+			{% csrf_token %}
+			<div class="radio-buttons">
+				<label>
+					<input type="radio" name="action" value="waiting" checked> Из ожидания
+				</label>
+				<label>
+					<input type="radio" name="action" value="prebuy"> Добавить выкуп
+				</label>
+			</div>
+
+			<!-- Поля для выбора "Из ожидания" -->
+			 <div id="waiting-fields" class="form-fields">
+				 <div class="input_field">
+					 <label for="car_name">Наименование автомобиля</label>
+					 <select name="buy_car_id" id="car_name">
+						 {% for car in cars %}
+						 	<option value="{{ car.id }}">{{ car.name }}</option>
+						 {% endfor %}
+					 </select>
+				 </div>
+
+				 <div class="input_field">
+					 <label for="pts">ПТС</label>
+					 <select name="buy_car_pts" id="pts">
+						 <option value="original">Оригинал</option>
+						 <option value="duplicate">Дубликат</option>
+					 </select>
+				 </div>
+
+				 <div class="input_field">
+					 <label for="owners">Количество владельцев</label>
+					 <input type="number" name="buy_car_owners" placeholder="Количество владельцев">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="keys">Количество ключей</label>
+					 <input type="number" name="buy_car_keys" placeholder="Количество ключей">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="buyer">На кого выкуплен</label>
+					 <select name="buy_car_entitie" id="buyer">
+						 {% for entitie in entities %}
+						 	<option value="{{ entitie.id }}">{{ entitie.full_name }}</option>
+						 {% endfor %}
+					 </select>
+				 </div>
+
+				 <div class="input_field">
+					 <label for="amount">Сумма</label>
+					 <input type="number" name="buy_car_amount" placeholder="Сумма">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="account_name">Наименование счета</label>
+					 <select name="buy_car_account_name" id="account_name">
+						 {% for ddsAccount in ddsAccounts %}
+						 	<option value="{{ ddsAccount.id }}">{{ ddsAccount.name }}</option>
+						 {% endfor %}
+					 </select>
+				 </div>
+			 </div>
+
+			 <!-- Поля для выбора "Добавить выкуп" -->
+			 <div id="prebuy-fields" class="form-fields" style="display: none;">
+				 <div class="input_field">
+					 <label for="mark">Марка</label>
+					 <select name="buy_car_mark" id="mark">
+						 {% for brand in brands %}
+							 <option value="{{ brand.name }}">{{ brand.name }}</option>
+						 {% endfor %}
+					 </select>
+				 </div>
+
+				 <div class="input_field">
+					 <label for="model">Модель</label>
+					 <select name="buy_car_model" id="model">
+						 {% for model in models %}
+						 	<option value="{{ model.name }}">{{ model.name }}</option>
+						 {% endfor %}
+					 </select>
+				 </div>
+
+				 <div class="input_field">
+					 <label for="vin">VIN</label>
+					 <input type="text" name="buy_car_vin" placeholder="VIN">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="year">Год</label>
+					 <input type="number" name="buy_car_year" placeholder="Год">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="engine">Мотор</label>
+					 <input type="text" name="buy_car_engine" placeholder="Мотор">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="transmission">Коробка</label>
+					 <input type="text" name="buy_car_transmission" placeholder="Коробка">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="mileage">Пробег</label>
+					 <input type="number" name="buy_car_mileage" placeholder="Пробег">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="source">Источник автомобиля</label>
+					 <select name="buy_car_source" id="source" >
+						 {% for client in clientSources %}
+						 	<option value="{{ client.id }}">{{ client.name }}</option>
+						 {% endfor %}
+					 </select>
+				 </div>
+
+				 <div class="big_input_field input_field">
+					 <label for="description">Описание</label>
+					 <input type="text" name="buy_car_description" placeholder="Преимущества/недостатки"></textarea>
+				 </div>
+
+				 <div class="input_field">
+					 <label for="margin">Прогноз маржинальности</label>
+					 <input type="number" name="buy_car_margin" placeholder="Прогноз маржинальности">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="sale_forecast">Прогноз продажи</label>
+					 <input type="number" name="buy_car_sale_forecast" placeholder="Прогноз продажи">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="sold_last_3_months">Продано за 3 мес</label>
+					 <input type="number" name="buy_car_sold_last_3_months" placeholder="Продано за 3 мес">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="current_listings">Сейчас опубликовано на классифайдах</label>
+					 <input type="number" name="buy_car_current_listings" placeholder="Опубликовано на классифайдах">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="haraba">Оценка автомобиля по Харабе</label>
+					 <input type="number" name="buy_car_haraba" placeholder="One in 1 to 5">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="pts">ПТС</label>
+					 <select name="buy_car_prebuy_pts" id="pts">
+						 <option value="original">Оригинал</option>
+						 <option value="duplicate">Дубликат</option>
+					 </select>
+				 </div>
+
+				 <div class="input_field">
+					 <label for="owners">Количество владельцев</label>
+					 <input type="number" name="buy_car_prebuy_owners" placeholder="Количество владельцев">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="keys">Количество ключей</label>
+					 <input type="number" name="buy_car_prebuy_keys" placeholder="Количество ключей">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="buyer">На кого выкуплен</label>
+					 <select name="buy_car_prebuy_entitie" id="buyer">
+						 {% for entitie in entities %}
+						 	<option value="{{ entitie.id }}">{{ entitie.full_name }}</option>
+						 {% endfor %}
+					 </select>
+				 </div>
+
+				 <div class="input_field">
+					 <label for="amount">Сумма</label>
+					 <input type="number" name="buy_car_prebuy_amount" placeholder="Сумма">
+				 </div>
+
+				 <div class="input_field">
+					 <label for="account_name">Наименование счета</label>
+					 <select name="buy_car_prebuy_account_name" id="account_name">
+						 {% for ddsAccount in ddsAccounts %}
+						 <option value="{{ ddsAccount.id }}">{{ ddsAccount.name }}</option>
+						 {% endfor %}
+					 </select>
+				 </div>
+			 </div>
+
+			 <button type="submit" class="button">Добавить запись</button>
+		 </form>
+	</div>
+
+	<!-- Продажа автомобиля -->
+	<div class="tab-content" id="content-3">
+		{{sale_message}}
+		<form action="{% url 'sale_form' %}" method="POST" name="sale_form">
+			{% csrf_token %}
+			<div class="input_field">
+				<label for="sale_car_name">Наименование автомобиля</label>
+				<select name="sale_car_id" id="sale_car_name">
+					{% for car in sale_cars %}
+						<option value="{{ car.id }}">{{ car.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="input_field">
+				<label for="sale_cost">Стоимость</label>
+				<input type="number" name="sale_cost" placeholder="Стоимость" required>
+			</div>
+
+			<div class="input_field">
+				<label for="sale_client">Клиент</label>
+				<select name="sale_client" id="sale_client">
+					{% for clientSource in clientSources %}
+						<option value="{{ clientSource.id }}">{{ clientSource.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="input_field">
+				<label for="sale_account_name">Наименование счета</label>
+				<select name="sale_account_name" id="sale_account_name">
+					{% for ddsAccount in ddsAccounts %}
+						<option value="{{ ddsAccount.id }}">{{ ddsAccount.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<button type="submit" class="button">Добавить запись</button>
+		</form>
+	</div>
+
+	<!-- ДДС -->
+	<div class="tab-content" id="content-4">
+		<form action="">
+			<div class="input_field">
+				<label for="dd_account_name">Наименование счета</label>
+				<select name="dd_account_name" id="dd_account_name">
+					<!-- Данные из БД -->
+				</select>
+
+			</div>
+
+			<div class="input_field">
+				<label for="dd_amount">Сумма</label>
+				<input type="number" name="dd_amount" placeholder="Сумма" required>
+			</div>
+
+			<div class="input_field">
+				<label for="dd_description">Описание</label>
+				<textarea name="dd_description" placeholder="Описание"></textarea>
+			</div>
+
+			<button type="submit" class="button">Добавить запись</button>
+		</form>
+	</div>
+
+	<!-- Перемещение денежных средств -->
+	<div class="tab-content" id="content-5">
+		<form action="">
+			<div class="input_field">
+				<label for="transfer_from_account">С какого счета</label>
+				<select name="transfer_from_account" id="transfer_from_account">
+					<!-- Данные из БД -->
+				</select>
+			</div>
+
+			<div class="input_field">
+				<label for="transfer_to_account">На какой счет</label>
+				<select name="transfer_to_account" id="transfer_to_account">
+					<!-- Данные из БД -->
+				</select>
+			</div>
+
+			<div class="input_field">
+				<label for="transfer_amount">Сумма</label>
+				<input type="number" name="transfer_amount" placeholder="Сумма" required>
+			</div>
+
+			<button type="submit" class="button">Добавить запись</button>
+		</form>
+	</div>
+
+	<!-- Отчет о состоянии автомобиля -->
+	<div class="tab-content" id="content-6">
+		<form action="">
+			<div class="input_field">
+				<label for="report_car_name">Наименование автомобиля</label>
+				<select name="report_car_name" id="report_car_name">
+					<!-- Данные из БД -->
+				</select>
+			</div>
+
+			<div class="input_field">
+				<label for="report_notes">Примечания</label>
+				<textarea name="report_notes" placeholder="Примечания"></textarea>
+			</div>
+			<button type="submit" class="button">Добавить запись</button>
+		</form>
+	</div>
+
+	<!-- Добавление задач -->
+	<div class="tab-content" id="content-7">
+		{{task_message}}
+		<form action="{% url 'task_form' %}" method="POST" name="task_form">
+			{% csrf_token %}
+			<div class="input_field">
+				<label for="task_car_name">Наименование автомобиля</label>
+				<select name="task_car_id" id="task_car_name">
+					{% for car in sale_cars %}
+						<option value="{{ car.id }}">{{ car.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="input_field">
+				<label for="task_employee">Сотрудник</label>
+				<select name="task_employee_id" id="task_employee">
+					{% for employee in task_employee %}
+						<option value="{{ employee.id }}">{{ employee.full_name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="input_field">
+				<label for="task_stage">Стадия подготовки</label>
+				<select name="task_stage_id" id="task_stage">
+					{% for stage in task_stage %}
+						<option value="{{ stage.id }}">{{ stage.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+
+			<div class="input_field">
+				<label for="task_name">Название задачи</label>
+				<input type="text" name="task_name" id="task_name" placeholder="Выполнить..." required>
+			</div>
+
+			<div class="input_field">
+				<label for="task_priority">Приоритет</label>
+				<input type="number" name="task_priority" id="task_priority" placeholder="От 1 до 10" required>
+			</div>
+
+			<div class="input_field">
+				<label for="task_description">Описание задачи</label>
+				<textarea name="task_description" id="task_description" placeholder="Описание задачи"></textarea>
+			</div>
+
+			<div class="input_field">
+				<label for="task_deadline">Срок выполнения</label>
+				<input type="date" name="task_deadline" id="task_deadline" required>
+			</div>
+			<button type="submit" class="button">Добавить запись</button>
+		</form>
+	</div>
+
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const markSelect = document.getElementById('mark');
+        const modelSelect = document.getElementById('model');
+
+        // Добавьте обработчик события для изменения марки
+        markSelect.addEventListener('change', function () {
+            const selectedMark = this.value;
+
+            // Очищаем список моделей
+            modelSelect.innerHTML = '';
+
+            // Получаем модели, соответствующие выбранной марке
+            fetch(`/get_models/${selectedMark}/`) // Получаем модели через AJAX
+                .then(response => response.json())
+                .then(data => {
+                    // Добавляем новые модели в выпадающий список
+                    data.forEach(model => {
+                        const option = document.createElement('option');
+                        option.value = model.name
+                        option.textContent = model.name;
+                        modelSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Ошибка:', error));
+        });
+    });
+</script>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+    const radioButtons = document.querySelectorAll('input[name="action"]');
+    const waitingFields = document.getElementById('waiting-fields');
+    const prebuyFields = document.getElementById('prebuy-fields');
+
+    radioButtons.forEach(function (radio) {
+        radio.addEventListener('change', function () {
+            if (this.value === 'waiting') {
+                waitingFields.style.display = 'block';
+                prebuyFields.style.display = 'none';
+            } else if (this.value === 'prebuy') {
+                waitingFields.style.display = 'none';
+                prebuyFields.style.display = 'block';
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

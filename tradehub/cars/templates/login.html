@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/login_style.css' %}">
+    <title>Tradehub</title>
+</head>
+<body>
+    <div class="wrapper">
+       <form action="" method="POST">
+           {% csrf_token %}
+            <h1>Login</h1>
+            <div class="input_field">
+                <input type="text" name ="username" id="username"  maxlength="32" placeholder="Username" required>
+                <div class="error" id="usernameerror" aria-live="polite"></div> <!--содержимое элемента может быть динамически обновлено без необходимости перезагрузки всей страницы-->
+            </div>
+            <div class="input_field">
+                <input type="password" name="password" id="password" maxlength="32" placeholder="Password" required>
+                <div class="error" id="passworderror" aria-live="polite"></div>
+            </div>
+           {{form.errors}}
+            <button type="submit" class="button">Login</button>
+       </form>
+    </div>
+</body>
+</html>
+

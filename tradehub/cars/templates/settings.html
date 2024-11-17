@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static %}
+{% block style %}  <link rel="stylesheet" href="{% static 'css/settings.css' %}"> {% endblock %}
+
+{% block content %}
+<div class="tab">
+    <input id="tab-btn-1" name="tab-btn" type="radio" value="" {% if active_tab == '1' %}checked{% endif %}>
+	<label for="tab-btn-1">Редактировать профиль</label>
+	<input id="tab-btn-2" name="tab-btn" type="radio" value="" {% if active_tab == '2' %}checked{% endif %}>
+	<label for="tab-btn-2">Изменить пароль</label>
+	<input id="tab-btn-3" name="tab-btn" type="radio" value="" {% if active_tab == '3' %}checked{% endif %}>
+	<label for="tab-btn-3">Добавить сотрудника</label>
+
+
+    <div class="tab-content" id="content-3">
+    	<h2>Добавить сотрудника</h2>
+		{{message}}
+		<div class="form">
+     		<form action="{% url 'add_user' %}" method="POST" name="employee_form">
+							  {% csrf_token %}
+							<div class="input_field">
+							  <label for="firstname">Имя</label>
+                                <input type="text" name="firstname" id="firstname" placeholder="Иван" maxlength="20" required>
+							</div>
+							<div class="input_field">
+							  <label for="lastname">Фамилия</label>
+							  <input type="text" name="lastname" placeholder="Иванов" maxlength="20" required>
+							</div>
+							<div class="input_field">
+							  <label for="fatherName">Отчество</label>
+							  <input type="text" name="fatherName" placeholder="Иванович" maxlength="20" >
+							</div>
+							<div class="input_field">
+							  <label for="phone">Телефон</label>
+							  <input type="tel" name="phone" placeholder="+7-(921)-123-12-12" maxlength="20">
+							</div>
+							<div class="input_field">
+							  <label for="mail">Эл. почта</label>
+							  <input type="email" name="mail" placeholder="ivanov_ivan@mail.ru" required>
+							</div>
+
+		 					<div class="input_field">
+							  <label for="department">Отдел</label>
+                                <select name="department" id="department" required>
+                              <option value="sales">Отдел продаж</option>
+                              <option value="prebuy">Отдел закупа</option>
+                                    <option value="repair">Отдел технической подготовки</option>
+                            </select>
+							</div>
+							<div class="input_field">
+							  <label for="position">Должность</label>
+                                <select name="position" id="position" required>
+                              <option value="linear">Линейный персонал</option>
+                              <option value="top">Руководитель отдела</option>
+                            </select>
+							</div>
+							<div class="input_field">
+							  <label for="datebirdth">Дата рождения</label>
+							  <input type="date" name="dateBirdth" placeholder="">
+							</div>
+		 							<div class="input_field">
+							  <label for="password1">Пароль</label>
+							  <input type="password" name="password1" required>
+							</div>
+		 							<div class="input_field">
+							  <label for="password2">Повторите пароль</label>
+							  <input type="password" name="password2" required>
+							</div>
+							<button type="submit" class="button">Добавить сотрудника</button>
+						  </form>
+						</div>
+	</div>
+	  <div class="tab-content" id="content-1">
+        <h2>Редактировать данные</h2>
+	    {{edit_message}}
+	    <div class="form">
+            <form action="{% url 'update_user_info' %}" method="POST" name="update_info_form">
+                {% csrf_token %}
+                <div class="input_field">
+                    <label for="name">Имя</label>
+                    <input type="text" name="name" id="name" placeholder="Иван" maxlength="20" value="{{ name }}" required>
+                </div>
+
+                <div class="input_field">
+                    <label for="lastName">Фамилия</label>
+                    <input type="text" name="lastName" placeholder="Иванов" maxlength="20" value="{{ lastName }}" required>
+                </div>
+
+                <div class="input_field">
+                    <label for="fatherName">Отчество</label>
+                    <input type="text" name="fatherName" placeholder="Иванович" value="{{ fatherName }}" maxlength="20" >
+                </div>
+
+                <div class="input_field">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" name="phone" placeholder="+7-(921)-123-12-12" value="{{ phone }}" maxlength="20">
+                </div>
+
+                <div class="input_field">
+                    <label for="mail">Эл. почта</label>
+                    <input type="email" name="mail" placeholder="ivanov_ivan@mail.ru" value="{{ email }}" required>
+                </div>
+
+                <div class="input_field">
+                    <label for="datebirdth">Дата рождения</label>
+                    <input type="date" name="dateBirdth" placeholder="" value="{{ dateBirdth }}" >
+                </div>
+
+                <button type="submit" class="button">Сохранить данные</button>
+            </form>
+        </div>
+    </div>
+
+     <div class="tab-content" id="content-2">
+        <h2>Изменить пароль</h2>
+	    {{password_message}}
+	    <div class="form">
+            <form action="{% url 'update_password' %}" method="POST" name="update_password">
+                {% csrf_token %}
+                <div class="input_field">
+                    <label for="lastPassword">Старый пароль</label>
+                    <input type="password" name="lastPassword" id="lastPassword" placeholder="" maxlength="32" required>
+                </div>
+
+                <div class="input_field">
+                    <label for="newPassword1">Новый пароль</label>
+                    <input type="password" name="newPassword1" id="newPassword1" placeholder="" maxlength="32" required>
+                </div>
+
+                <div class="input_field">
+                    <label for="newPassword2">Повторите новый пароль</label>
+                    <input type="password" name="newPassword2" id="newPassword2" placeholder="" maxlength="32" required>
+                </div>
+
+                <button type="submit" class="button">Сохранить</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

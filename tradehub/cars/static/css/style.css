@@ -1,0 +1,91 @@
+
+body{
+  background-color: #EBEAE7;
+}
+
+header {
+  display: flex;
+  justify-content: space-between; /* Раздвигает секции на всю ширину */
+  align-items: center; /* Центрирует элементы по вертикали */
+  height: 50px; /* Задаем фиксированную высоту для header */
+  padding: 0 10px; /* Добавляем отступы с краев */
+}
+
+.header__section {
+  display: flex;
+  align-items: center; /* Центрирует вложенные элементы по вертикали */
+  gap: 15px; /* Добавляем пространство между элементами */
+}
+
+.header__section.headerlogo {
+  margin-right: auto; /* Отодвигает логотип влево */
+}
+
+.header__item {
+  padding-left: 10px;
+  white-space: nowrap; /* Предотвращает перенос текста */
+}
+
+.headerButton {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 10px;
+  transition: background-color 0.3s;
+}
+
+.headerButton:hover {
+  background-color: #e0e0e0; /* Легкий фон при наведении */
+}
+
+main {
+    display: flex;
+    align-items: flex-start; /* Выравнивание по вертикали, чтобы .container и .sideBar были на одном уровне */
+    background-color: #FFFFFF; /*  */
+    border-radius: 30px;
+    min-height: 100vh; /* Минимальная высота - 100% высоты экрана */
+    box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.2); /* Пример тени */
+}
+
+.sideBar{
+  width: 150px;
+  align-self: stretch;
+  border-right: 1 px solid #D7D8DD; /* устанавливает стиль, ширину и цвет правой границы элемента*/
+  background-color: #F7F6F5;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  padding-left: 10px;
+  padding-top: 15px;
+}
+
+.sideBar a{
+  text-decoration: none; /*убрать стиль гиперссылки*/
+  color: #000000;
+  border-radius: 10px;
+}
+.sidebar__item{
+  display: flex;
+  align-items: center; /* Выравнивание по вертикали */
+  cursor: pointer;
+  padding: 8px 10px; /*устанавливает внутренние поля элемента вверх-вниз право-лево*/
+  font-size: 15px;
+  height: 30px;
+}
+.sidebar__item .img{
+    padding-right: 15px;
+}
+
+.sidebar__item:hover{
+  background-color: #EBEAE7;
+  border-radius: 10px;
+}
+
+.container{
+    flex: 1; /* Занимает оставшееся пространство в main */
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    overflow-x: auto;
+}
