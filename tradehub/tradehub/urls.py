@@ -20,32 +20,32 @@ from django.contrib.auth.views import LogoutView
 import django.contrib.auth.views as authView
 from django.conf import settings
 from django.conf.urls.static import static
-from cars import views
+from cars.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls, name="admin_page"),
-    path('login', views.TradehubLoginView.as_view(), name="login_page"),
-    path('logout/', views.LogoutView, name="logout"),
-    path('home', views.HomePageView, name="home"),
-    path('settings', views.SettingsPageView, name="settings"),
-    path('form', views.TradehubFormView, name="form_page"),
-    path('stock', views.StockPageView, name="sclad_page"),
-    path('car_card/<int:car_id>/', views.CarCardView, name='car_card'),
-    path('get_models/<brand_name>/', views.get_models, name='get_models'),
-    path('prebuy_form', views.PreBuyCarForm, name='prebuy_form'),
-    path('buy_form', views.BuyCarForm, name='buy_form'),
-    path('sale_form', views.SaleCarForm, name='sale_form'),
-    path('task_form', views.TaskForm, name='task_form'),
-    path('save_widgets/', views.save_widgets_view, name='save_widgets'),
-    path('analytics', views.AnalitycPageView, name='analytics'),
-    path('analytics/pnl', views.generate_analytics_view, name='generate_pnl'),
-    path('settings/update/password', views.UpdateUserForm, name='update_user_info'),
-    path('settings/update/userinfo', views.UpdatePasswordForm, name='update_password'),
-    path('settings/update/adduser', views.AddUserForm, name='add_user'),
-    path('kanban', views.KanbanPageView, name='kanban'),
-    path('update-stage/', views.UpdateStage, name='update_stage'),
-    path('kanban/tasks/<int:car_id>/', views.GetTasks, name='get_tasks_by_car'),
-    path('kanban/tasks/complete/', views.CompleteTasks, name='complete_tasks'),
+    path('login', TradehubLoginView.as_view(), name="login_page"),
+    path('logout/', LogoutView, name="logout"),
+    path('home', HomePageView, name="home"),
+    path('settings', SettingsPageView, name="settings"),
+    path('form', TradehubFormView, name="form_page"),
+    path('stock', StockPageView, name="sclad_page"),
+    path('car_card/<int:car_id>/', CarCardView, name='car_card'),
+    path('get_models/<brand_name>/', get_models, name='get_models'),
+    path('prebuy_form', PreBuyCarForm, name='prebuy_form'),
+    path('buy_form', BuyCarForm, name='buy_form'),
+    path('sale_form', SaleCarForm, name='sale_form'),
+    path('task_form', TaskForm, name='task_form'),
+    path('save_widgets/', save_widgets_view, name='save_widgets'),
+    path('analytics', AnalitycPageView, name='analytics'),
+    path('analytics/pnl', generate_analytics_view, name='generate_pnl'),
+    path('settings/update/password', UpdateUserForm, name='update_user_info'),
+    path('settings/update/userinfo', UpdatePasswordForm, name='update_password'),
+    path('settings/update/adduser', AddUserForm, name='add_user'),
+    path('kanban', KanbanPageView, name='kanban'),
+    path('update-stage/', UpdateStage, name='update_stage'),
+    path('kanban/tasks/<int:car_id>/', GetTasks, name='get_tasks_by_car'),
+    path('kanban/tasks/complete/', CompleteTasks, name='complete_tasks'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
